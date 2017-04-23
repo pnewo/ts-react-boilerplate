@@ -1,0 +1,9 @@
+coverage/
+node_modules/
+dist/
+**/.DS_store
+**/.vs
+**/.vscode
+!**/.vscode/tasks.json
+yarn-error.log
+_book/
