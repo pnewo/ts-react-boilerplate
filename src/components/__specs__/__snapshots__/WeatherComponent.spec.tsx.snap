@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WeatherComponent should render correctly 1`] = `
+<WeatherComponent
+  getWeather={[Function]}
+>
+  <div
+    className="current-weather"
+  >
+    Current weather: 
+  </div>
+</WeatherComponent>
+`;
+
+exports[`WeatherComponent should render correctly 2`] = `
+<WeatherComponent
+  getWeather={[Function]}
+  weather="cloudy"
+>
+  <div
+    className="current-weather"
+  >
+    Current weather: 
+    cloudy
+  </div>
+</WeatherComponent>
+`;
