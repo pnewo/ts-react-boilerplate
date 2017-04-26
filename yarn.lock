@@ -2327,6 +2327,10 @@ http-signature@~1.1.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
+http-status-enum@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/http-status-enum/-/http-status-enum-1.0.2.tgz#5ee0f8c16c08e0899bcc93f97d982e4753354714"
+
 https-browserify@~0.0.0:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"

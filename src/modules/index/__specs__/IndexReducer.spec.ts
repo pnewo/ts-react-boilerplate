@@ -1,7 +1,19 @@
+import * as nock from 'nock';
 import { ActionsObservable } from 'redux-observable';
+import * as HttpTest from '../../../utils/HttpTest';
 import configureStore from '../../../redux/store';
 import Todo from '../../../common/Todo';
 import IndexReducer, {
+    GET_WEATHER,
+    getWeather,
+    GetWeatherAction,
+    GET_WEATHER_SUCCESS,
+    getWeatherSuccess,
+    GetWeatherSuccessAction,
+    GET_WEATHER_FAIL,
+    getWeatherFail,
+    GetWeatherFailAction,
+    getWeatherEpic,
     SET_TITLE,
     setTitle,
     SAVE_TODO,
@@ -20,6 +32,59 @@ import IndexReducer, {
 } from '../IndexReducer';
 
 describe('IndexReducer', () => {
+    afterEach(() => {
+        nock.cleanAll();
+    });
+
+    it('should set the correct state on getWeather', () => {
+        const lat = 123.34;
+        const lon = 43.321;
+        const action: GetWeatherAction = getWeather(lat, lon);
+        expect(action).toEqual({ type: GET_WEATHER, payload: { lat, lon } });
+        expect(IndexReducer(undefined, action).loading).toBeTruthy();
+    });
+
+    it('should set the correct state on getWeatherSuccess', () => {
+        const payload = 'Cloudy';
+        const action: GetWeatherSuccessAction = getWeatherSuccess(payload);
+        expect(action).toEqual({ type: GET_WEATHER_SUCCESS, payload });
+        const state: IndexState = IndexReducer(undefined, action);
+        expect(state.weather).toEqual(payload);
+        expect(state.loading).toBeFalsy();
+    });
+
+    it('should set the correct state on getWeatherFail', () => {
+        const action: GetWeatherFailAction = getWeatherFail();
+        expect(action).toEqual({ type: GET_WEATHER_FAIL });
+        expect(IndexReducer(undefined, action).loading).toBeFalsy();
+    });
+
+    describe('getWeatherEpic', () => {
+        beforeEach(() => HttpTest.beforeEachFunction('https://api.openweathermap.org/data/2.5'));
+        /* tslint:disable:no-magic-numbers */
+        it('should return the correct effects on success', async () => {
+            const lat = 123.34;
+            const lon = 43.321;
+            const payload = 'Windy';
+            HttpTest.nockTestApi('https://api.openweathermap.org/data/2.5')
+                .get(`/weather?lat=${lat}&lon=${lon}`)
+                .reply(200, { weather: [{ main: payload }] });
+            return await getWeatherEpic(ActionsObservable.of(getWeather(lat, lon)), undefined)
+                .forEach(actionReceived => expect(actionReceived).toEqual(getWeatherSuccess(payload)));
+        });
+        
+        it('should return the correct effect on fail', async () => {
+            const lat = 123.34;
+            const lon = 43.321;
+            HttpTest.nockTestApi('https://api.openweathermap.org/data/2.5')
+                .get(`/weather?lat=${lat}&lon=${lon}`)
+                .reply(500, undefined);
+            return await getWeatherEpic(ActionsObservable.of(getWeather(lat, lon)), undefined)
+                .forEach(actionReceived => expect(actionReceived).toEqual(getWeatherFail()));
+        });
+        /* tslint:enable:no-magic-numbers */
+    });
+
     it('should set the correct title as payload on setTitle', () => {
         const payload = 'THIS_IS_A_TEST_TITLE';
         const setTitleAction = setTitle(payload);
