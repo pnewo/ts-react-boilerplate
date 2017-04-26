@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Router, Route, browserHistory } from 'react-router';
+import { Route } from 'react-router-dom';
+import IndexContainer from './index/IndexView';
 
-/* tslint:disable:no-any */
-const App: React.StatelessComponent<any> = props => (
-    /* tslint:enable:no-any */
+const App: React.StatelessComponent<undefined> = () => (
     <div className="app-base">
-        {props.children}
+        <Route component={IndexContainer} />
     </div>
 );
 

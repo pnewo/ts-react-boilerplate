@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { Actions } from '../../redux/reducer';
 import Todo from '../../common/Todo';
 import TodoComponent from '../../components/TodoComponent';
@@ -15,7 +16,7 @@ export interface IIndexProps {
     setDone: (i: number) => Dispatch<Actions>;
 }
 
-const IndexView: React.StatelessComponent<IIndexProps> = ({ title, todos, loading, setTitle, saveTodo, setDone }) => (
+const IndexView: React.StatelessComponent<IIndexProps & RouteComponentProps<undefined>> = ({ title, todos, loading, setTitle, saveTodo, setDone }) => (
     <main className="index">
         {loading && <Loader />}
         <h1 className="index__header">Todo app</h1>
