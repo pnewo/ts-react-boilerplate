@@ -9,6 +9,10 @@ exports[`IndexView should render with correct props 1`] = `
   >
     Todo app
   </h1>
+  <WeatherComponent
+    getWeather={[Function]}
+    weather="cloudy"
+  />
   <form
     className="index__form"
     onSubmit={[Function]}
@@ -49,6 +53,10 @@ exports[`IndexView should render with correct props 2`] = `
   >
     Todo app
   </h1>
+  <WeatherComponent
+    getWeather={[Function]}
+    weather="cloudy"
+  />
   <form
     className="index__form"
     onSubmit={[Function]}
